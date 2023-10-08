@@ -4,8 +4,9 @@ import numpy as np
 import neural_net
 
 #load data
-df = pd.read_csv("titanic/Train.csv")
-
+df = pd.read_csv("titanic/test.csv")
+survive = pd.read_csv("titanic/gender_submission.csv")
+df = pd.merge(df, survive, on='PassengerId')
 #we remove the Name and Ticket colonnes and we transform str in float
 df = df.drop("Name", axis = 1)
 df = df.drop("Ticket", axis = 1)
@@ -16,7 +17,6 @@ df["Sex"] = df["Sex"].replace(sex)
 embarked = {"C": 0, "Q": 1, "S": 2}
 df["Embarked"] = df["Embarked"].replace(embarked)
 df = df.dropna()
-print(df.values[0])
 
 input_size = 7
 hidden_size = 64
@@ -52,9 +52,4 @@ with torch.no_grad():
             n_correct +=  1
     accuracy = n_correct/n_samples
     print(f"accuracy of the net = {accuracy}")
-    print(accuracy)
 assert accuracy > 0.5
-
-
-
-
